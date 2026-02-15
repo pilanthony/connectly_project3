@@ -19,7 +19,7 @@ from django.urls import path, include
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    
     path('api-auth/', include('rest_framework.urls')),  #DRF Login/Logout
-    path('posts/', include('posts.urls'))
+    path('posts/', include('posts.urls')),  #Include URLs from the posts app
+    path('tasks/', include('tasks.urls')),
 ]
