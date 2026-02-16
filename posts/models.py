@@ -19,5 +19,15 @@ class Post(models.Model):
     
     class Meta:
         ordering = ['-created_at']
+
+class Comment(models.Model):
+    text = models.TextField() # The text content of the comment
+    author = models.ForeignKey(User,related_name='comments', on_delete=models.CASCADE) #The user who created the comment #Each comment belongs to one user, and if the user is deleted, the comment will also be deleted
+    post = models.ForeignKey(Post, related_name='comments', on_delete=models.CASCADE)
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return f"Comment by {self.author.username} on Post {self.post.id}"
+    
         
     
