@@ -1,21 +1,37 @@
 from rest_framework import serializers
-from .models import User, Task
+from django.contrib.auth.models import User
+from .models import Task
 
-#Serializer for the User model
+
+# =========================
+# USER SERIALIZER (with password hashing)
+# =========================
 class UserSerializer(serializers.ModelSerializer):
+    password = serializers.CharField(write_only=True)
+
     class Meta:
         model = User
-        fields = ['id', 'username', 'email', 'created_at'] # Include all relevant fields
+        fields = ['id', 'username', 'email', 'password']
 
-#Serializer for the Task model with validation for assigned_to
+    def create(self, validated_data):
+        return User.objects.create_user(
+            username=validated_data['username'],
+            email=validated_data.get('email', ''),
+            password=validated_data['password']
+        )
+
+
+# =========================
+# TASK SERIALIZER
+# =========================
 class TaskSerializer(serializers.ModelSerializer):
-    assigned_to = serializers.PrimaryKeyRelatedField(queryset=User.objects.all()) # String representation of the assigned user for readability
+    assigned_to = serializers.PrimaryKeyRelatedField(queryset=User.objects.all())
 
     class Meta:
-        model =Task
+        model = Task
         fields = ['id', 'title', 'description', 'assigned_to', 'created_at']
 
-        def validate_assigned_to(self,value):  #Custom validation to ensure the assigned user exists
-            if not User.objects.filter(id=value.id).exist():
-                raise serializers.ValidationError("Assigned user does not exist.")
-            return value
+    def validate_assigned_to(self, value):
+        if not User.objects.filter(id=value.id).exists():
+            raise serializers.ValidationError("Assigned user does not exist.")
+        return value
