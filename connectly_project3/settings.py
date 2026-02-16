@@ -40,6 +40,7 @@ INSTALLED_APPS = [
     'rest_framework',    #Add django rest framework to the installed apps
     'posts', 
     'tasks',
+    'django_extensions',
 ]
 
 MIDDLEWARE = [
@@ -51,6 +52,14 @@ MIDDLEWARE = [
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
+
+SECURE_SSL_REDIRECT = True
+SESSION_COOKIE_SECURE =True
+CSRF_COOKIE_SECURE =True
+SECURE_HSTS_SECONDS = 31536000
+SECURE_HSTS_INCLUDE_SUBDOMAINS = True
+SECURE_HSTS_PRELOAD =True
+
 
 ROOT_URLCONF = 'connectly_project3.urls'
 
