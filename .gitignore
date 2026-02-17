@@ -1,5 +1,17 @@
+# Virtual environment
 venv/
-db.sqlite3
+
+# Python cache
 __pycache__/
 *.pyc
+
+# Database
+*.sqlite3
+
+# HTTPS local certificates
+*.crt
+*.key
 *.pem
+
+# macOS
+.DS_Store
